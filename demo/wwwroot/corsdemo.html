@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cors Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <script>
+        function getCerts() {
+            $("#certs-status").text("RETRIEVING ...");
+            $("#certs-result").text("");
+
+            fetch('https://sharedwus.wus.attest.azure.net/certs', {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(jsonObject => {
+                    $("#certs-status").text("SUCCESS");
+                    $("#certs-status").css("background-color", "lightgreen");
+                    $("#certs-result").text(JSON.stringify(jsonObject));
+                })
+                .catch(error => {
+                    $("#certs-status").text("FAILURE (hit <ctrl><shift><i> to see details)");
+                    $("#certs-status").css("background-color", "pink");
+                    $("#certs-result").text(error);
+                });
+        }
+    </script>
+
+    <div class="container-fluid">
+        <h1 class="well text-center">Simple MAA CORS demo</h1>
+        <h3 class="well text-center">Getting MAA certs from https://sharedwus.wus.attest.azure.net/certs</h3>
+        <div class="row">
+            <div></div>
+            <div class="text-center">
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="getCerts()">Get Now</button>
+                </div>
+                <div style="margin-top: 20px;">
+                    <h3 id="certs-status"></h3>
+                </div>
+                <div style="margin-top: 20px;">
+                    <p id="certs-result"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
